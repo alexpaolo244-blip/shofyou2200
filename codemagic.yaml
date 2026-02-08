@@ -1,18 +1,25 @@
 workflows:
   android-workflow:
-    name: Final Auto-Fix Build
+    name: Shofyou Official Build
     max_build_duration: 60
     instance_type: mac_mini_m2
     scripts:
+      - name: Generate Keystore
+        script: |
+          # صنع مفتاح توقيع حقيقي داخل السيرفر
+          keytool -genkey -v -keystore shofyou.keystore -alias shofyou -keyalg RSA -keysize 2048 -validity 10000 -storepass 123456 -keypass 123456 -dname "CN=Shofyou, OU=App, O=Shofyou, L=City, S=State, C=US"
       - name: Give execution permission
         script: chmod +x gradlew
-      - name: Auto-Fix Imports and Package
+      - name: Auto-Fix Imports
         script: |
-          # هذا السطر يبحث عن أي كلمة sngine.app.webview ويحولها لـ com.shofyou.app.webview في كل الملفات
           find . -type f \( -name "*.java" -o -name "AndroidManifest.xml" \) -print0 | xargs -0 sed -i '' 's/sngine\.app\.webview/com\.shofyou\.app\.webview/g'
-      - name: Build Android App
+      - name: Build and Sign APK
         script: | 
-          ./gradlew clean
-          ./gradlew assembleRelease
+          # بناء النسخة الموقعة رسمياً
+          ./gradlew assembleRelease \
+            -Pandroid.injected.signing.store.file=$(pwd)/shofyou.keystore \
+            -Pandroid.injected.signing.store.password=123456 \
+            -Pandroid.injected.signing.key.alias=shofyou \
+            -Pandroid.injected.signing.key.password=123456
     artifacts:
       - app/build/outputs/apk/release/*.apk
