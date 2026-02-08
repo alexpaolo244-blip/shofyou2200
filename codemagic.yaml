@@ -4,9 +4,13 @@ workflows:
     max_build_duration: 60
     instance_type: mac_mini_m1
     scripts:
+      - name: Give execution permission
+        script: | 
+          chmod +x gradlew
       - name: Build Android App
         script: | 
           ./gradlew assembleRelease
+          ./gradlew bundleRelease
     artifacts:
-      - app/build/outputs/apk/**/*.apk
-      - app/build/outputs/bundle/**/*.aab
+      - app/build/outputs/apk/release/*.apk
+      - app/build/outputs/bundle/release/*.aab
