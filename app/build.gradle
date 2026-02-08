@@ -3,7 +3,7 @@ apply plugin: 'com.android.application'
 android {
     compileSdk 35
 	defaultConfig {
-		applicationId 'shofyou.app.webview'
+		applicationId 'com.shofyou.app.webview'
         minSdk 27
         targetSdk 35
 		versionCode 12
@@ -19,7 +19,7 @@ android {
 	}
 	productFlavors {
 	}
-	namespace 'shofyou.app.webview'
+	namespace 'com.shofyou.app.webview'
 	buildFeatures {
         buildConfig = true
     }
