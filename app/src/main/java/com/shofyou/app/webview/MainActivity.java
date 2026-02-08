@@ -1,4 +1,4 @@
-package shofyou.app.webview;
+package com.shofyou.app.webview;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
