@@ -1,17 +1,15 @@
 workflows:
   android-workflow:
-    name: Android Workflow
+    name: Final Auto-Fix Build
     max_build_duration: 60
     instance_type: mac_mini_m2
     scripts:
       - name: Give execution permission
-        script: | 
-          chmod +x gradlew
-      - name: Fix Package Name and Imports
+        script: chmod +x gradlew
+      - name: Auto-Fix Imports and Package
         script: |
-          # هذا الأمر يبحث عن أي نص قديم ويستبدله بالجديد في كل ملفات الجافا
-          find . -type f -name "*.java" -print0 | xargs -0 sed -i '' 's/sngine\.app\.webview/shofyou\.app\.webview/g'
-          find . -type f -name "AndroidManifest.xml" -print0 | xargs -0 sed -i '' 's/sngine\.app\.webview/shofyou\.app\.webview/g'
+          # هذا السطر يبحث عن أي كلمة sngine.app.webview ويحولها لـ com.shofyou.app.webview في كل الملفات
+          find . -type f \( -name "*.java" -o -name "AndroidManifest.xml" \) -print0 | xargs -0 sed -i '' 's/sngine\.app\.webview/com\.shofyou\.app\.webview/g'
       - name: Build Android App
         script: | 
           ./gradlew clean
